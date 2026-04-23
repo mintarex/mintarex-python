@@ -1,11 +1,33 @@
-# mintarex
+<p align="center">
+  <a href="https://mintarex.com">
+    <img src="https://mintarex.com/mintarex.svg" alt="Mintarex" width="320" />
+  </a>
+</p>
 
-Official Python SDK for the **Mintarex Corporate OTC API**.
+<h1 align="center">mintarex</h1>
 
-- API docs: <https://developers.mintarex.com>
-- Issues / support: <https://github.com/mintarex/mintarex-python/issues>
+<p align="center">
+  Official Python SDK for the <a href="https://developers.mintarex.com">Mintarex Corporate OTC API</a>.
+</p>
 
-## Install
+<p align="center">
+  <a href="https://pypi.org/project/mintarex/"><img src="https://img.shields.io/pypi/v/mintarex.svg?style=flat-square" alt="PyPI version" /></a>
+  <a href="https://pypi.org/project/mintarex/"><img src="https://img.shields.io/pypi/dm/mintarex.svg?style=flat-square" alt="PyPI downloads" /></a>
+  <a href="https://github.com/mintarex/mintarex-python/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mintarex.svg?style=flat-square" alt="MIT License" /></a>
+  <a href="https://www.python.org"><img src="https://img.shields.io/pypi/pyversions/mintarex.svg?style=flat-square" alt="Python version" /></a>
+  <a href="https://mypy-lang.org"><img src="https://img.shields.io/badge/types-mypy_strict-blue?style=flat-square" alt="mypy strict" /></a>
+</p>
+
+---
+
+- HMAC-SHA256 request signing (automatic)
+- Typed errors per API error code
+- RFQ trading, crypto deposits/withdrawals, webhooks, real-time SSE streams
+- Webhook signature verification helper
+- Built for Python 3.11+ — one runtime dependency (`httpx`)
+- Full type hints (`py.typed`, mypy-strict clean)
+
+## Installation
 
 ```bash
 pip install mintarex
@@ -164,6 +186,16 @@ mx = Mintarex(
 | `mx.streams` | `prices()`, `account()` |
 | `mx.public` | `instruments()`, `networks(...)`, `fees()` |
 
+## Support
+
+- **API Docs**: https://developers.mintarex.com
+- **Issues**: https://github.com/mintarex/mintarex-python/issues
+- **Contact**: support@mintarex.com
+
 ## License
 
-MIT
+MIT © [Mintarex](https://mintarex.com)
+
+<p align="center">
+  <img src="https://mintarex.com/ICON-512X512.png" alt="Mintarex" width="64" />
+</p>
