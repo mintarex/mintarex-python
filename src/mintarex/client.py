@@ -23,7 +23,7 @@ from .errors import (
 from .signing import sign
 from .types import Environment, ResponseMeta
 
-SDK_VERSION = "0.0.1"
+SDK_VERSION = "0.0.4"
 
 DEFAULT_BASE_URL = "https://institutional.mintarex.com/v1"
 DEFAULT_STREAM_BASE_URL = "https://institutional.mintarex.com/v1/stream"

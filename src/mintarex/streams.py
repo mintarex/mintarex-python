@@ -16,9 +16,10 @@ from __future__ import annotations
 import contextlib
 import json
 import random
+import re
 import threading
 import time
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Literal
 
@@ -56,6 +57,7 @@ class Stream:
         max_reconnect_attempts: int | None = None,
         max_reconnect_delay_s: float = 30.0,
         heartbeat_interval_s: float = 15.0,
+        instruments: Sequence[str] | None = None,
     ) -> None:
         if not (heartbeat_interval_s >= 1.0):
             raise ValueError("heartbeat_interval_s must be ≥ 1.0")
@@ -67,6 +69,7 @@ class Stream:
         self._max_reconnect_attempts = max_reconnect_attempts
         self._max_reconnect_delay_s = max_reconnect_delay_s
         self._heartbeat_interval_s = heartbeat_interval_s
+        self._instruments = _normalize_instruments(instruments)
         self._closed = False
         self._reconnect_attempts = 0
         self._response: httpx.Response | None = None
@@ -134,7 +137,10 @@ class Stream:
         url = self._client.stream_base_url.copy_with(
             path=self._client.stream_base_url.path.rstrip("/") + "/" + self._endpoint
         )
-        url = url.copy_merge_params([("token", token)])
+        params: list[tuple[str, str | int | float | bool | None]] = [("token", token)]
+        if self._endpoint == "prices" and self._instruments:
+            params.append(("instruments", ",".join(self._instruments)))
+        url = url.copy_merge_params(params)
 
         headers = {"Accept": "text/event-stream"}
         http = self._client.http_client
@@ -203,6 +209,28 @@ class Stream:
 
     def _arm_watchdog(self) -> None:
         self._watchdog_deadline = time.monotonic() + self._heartbeat_interval_s * 2
+
+
+_INSTRUMENT_RE = re.compile(r"^[A-Z0-9]{1,20}_[A-Z0-9]{1,20}$")
+
+
+def _normalize_instruments(input_: Sequence[str] | None) -> list[str] | None:
+    if input_ is None:
+        return None
+    if isinstance(input_, str | bytes):
+        raise ValueError('instruments must be a sequence of strings (e.g. ["BTC_USD"])')
+    cleaned: list[str] = []
+    for v in input_:
+        if not isinstance(v, str) or not v:
+            raise ValueError("instruments entries must be non-empty strings")
+        if not _INSTRUMENT_RE.match(v):
+            raise ValueError(f'instruments entry "{v}" must look like BASE_QUOTE (e.g. BTC_USD)')
+        cleaned.append(v)
+    if not cleaned:
+        return None
+    if len(cleaned) > 200:
+        raise ValueError("instruments list capped at 200 entries")
+    return cleaned
 
 
 def _find_event_boundary(s: str) -> int:
