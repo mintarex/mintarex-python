@@ -68,25 +68,20 @@ class SingleBalanceResponse(TypedDict):
 
 class FeesResponse(TypedDict, total=False):
     trading_fee_rate: str
-    fiat_withdrawal_fee_rate: str
     note: str
     timestamp: str
 
 
 class LimitBucket(TypedDict):
     daily_limit: str | None
-    daily_used: str
+    daily_used: str | None
     monthly_limit: str | None
-    monthly_used: str
+    monthly_used: str | None
     remaining_daily: str | None
     remaining_monthly: str | None
 
 
 class LimitsBuckets(TypedDict):
-    card_deposit: LimitBucket | None
-    wallet_deposit: LimitBucket | None
-    bank_deposit: LimitBucket | None
-    fiat_withdrawal: LimitBucket | None
     crypto_deposit: LimitBucket | None
     crypto_withdrawal: LimitBucket | None
 
