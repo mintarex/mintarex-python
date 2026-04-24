@@ -66,12 +66,6 @@ class SingleBalanceResponse(TypedDict):
     timestamp: str
 
 
-class FeesResponse(TypedDict, total=False):
-    trading_fee_rate: str
-    note: str
-    timestamp: str
-
-
 class LimitBucket(TypedDict):
     daily_limit: str | None
     daily_used: str | None

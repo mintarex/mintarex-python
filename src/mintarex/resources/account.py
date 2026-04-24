@@ -1,4 +1,4 @@
-"""``/account/*`` resource — balances, fees, limits."""
+"""``/account/*`` resource — balances, limits."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ _FIAT_RE = re.compile(r"^[A-Z]{3,10}$")
 
 
 class AccountResource:
-    """Account-level data: balances, fees, limits."""
+    """Account-level data: balances, limits."""
 
     def __init__(self, client: MintarexClient) -> None:
         self._client = client
@@ -45,10 +45,6 @@ class AccountResource:
             method="GET",
             path=f"/account/balance/{urlquote(c, safe='')}",
         )
-
-    def fees(self) -> dict[str, object]:
-        """Return the fee schedule resolved for this account."""
-        return self._client.request(method="GET", path="/account/fees")
 
     def limits(self) -> dict[str, object]:
         """Return daily/monthly deposit + withdrawal limits for this account."""

@@ -54,7 +54,6 @@ from .types import (
     CurrencyType,
     DepositAddress,
     Environment,
-    FeesResponse,
     Instrument,
     LimitBucket,
     LimitsBuckets,
@@ -81,7 +80,7 @@ from .types import (
 )
 from .webhooks import DEFAULT_TOLERANCE_SECONDS, verify_webhook
 
-__version__ = "0.0.1"
+__version__ = "0.0.3"
 
 __all__ = [
     # Core
@@ -102,7 +101,6 @@ __all__ = [
     "CurrencyType",
     "DepositAddress",
     "Environment",
-    "FeesResponse",
     "Instrument",
     "InsufficientBalanceError",
     "LimitBucket",
