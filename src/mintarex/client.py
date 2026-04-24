@@ -23,7 +23,7 @@ from .errors import (
 from .signing import sign
 from .types import Environment, ResponseMeta
 
-SDK_VERSION = "0.0.4"
+SDK_VERSION = "0.0.5"
 
 DEFAULT_BASE_URL = "https://institutional.mintarex.com/v1"
 DEFAULT_STREAM_BASE_URL = "https://institutional.mintarex.com/v1/stream"
@@ -201,36 +201,6 @@ class MintarexClient:
                 raise
 
         raise last_error if last_error is not None else NetworkError("Retry limit exceeded")
-
-    # ------------------------------------------------------------- signForStream
-    def sign_for_stream_token(self) -> dict[str, Any]:
-        """Produce the signed request for POST /stream/token.
-
-        Returned as a plain dict so a streaming consumer can issue the request
-        directly without going through :meth:`request` (avoids mismatched
-        timeout semantics with SSE).
-        """
-        path = _join_path(self.base_url.path, "/stream/token")
-        body_bytes = ""
-        headers = sign(
-            api_key=self._api_key,
-            api_secret=self._api_secret,
-            method="POST",
-            path=path,
-            body=body_bytes,
-        )
-        headers.update(
-            {
-                "Accept": "application/json",
-                "User-Agent": self._user_agent(),
-            }
-        )
-        return {
-            "method": "POST",
-            "url": str(self.base_url.copy_with(path=path)),
-            "headers": headers,
-            "body": body_bytes,
-        }
 
     # ---------------------------------------------------------------- internals
     @property
