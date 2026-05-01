@@ -10,7 +10,7 @@ import pytest
 from mintarex import WebhookSignatureError, verify_webhook
 from mintarex.signing import hmac_sign
 
-SECRET = "whsec_testsecret0123456789abcdef0123456789abcdef01234567"  # noqa: S105
+SECRET = "mtxhook_test_fixture_key_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"  # noqa: S105
 
 
 def _sig(ts: str, body: str, secret: str = SECRET) -> str:
@@ -74,7 +74,7 @@ def test_rejects_tampered_body() -> None:
 def test_rejects_wrong_secret() -> None:
     body = '{"timestamp":"t","trade_id":"x"}'
     ts = str(int(time.time()))
-    sig = _sig(ts, body, "whsec_othersecret0123456789abcdef0123456789abcdef012")
+    sig = _sig(ts, body, "mtxhook_test_other_key_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     with pytest.raises(WebhookSignatureError):
         verify_webhook(body=body, headers=_real_headers(ts, sig), secret=SECRET)
 
