@@ -25,8 +25,8 @@ def hook() -> Response:
             headers=dict(request.headers),
             secret=SECRET,
         )
-    except WebhookSignatureError as err:
-        return Response(str(err), status=400)
+    except WebhookSignatureError:
+        return Response("invalid signature", status=400)
 
     if event["event_type"] == "trade.executed":
         print("trade:", event["data"])
